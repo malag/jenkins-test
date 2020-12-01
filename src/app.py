@@ -8,10 +8,10 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from PIL import Image
 import io
-import numpy as np
-import matplotlib.pyplot as plt
-import base64
-from sklearn.linear_model import LinearRegression
+# import numpy as np
+# import matplotlib.pyplot as plt
+# import base64
+# from sklearn.linear_model import LinearRegression
 import json
 
 app = Flask(__name__)
@@ -128,57 +128,59 @@ def consumo():
     else:
         return "Not found method"
 
-@app.route("/reglin/", methods=["GET", "POST"])
-def predecir():
-    if request.method == "POST":
-        data = request.get_json()
-        if (data != None) and ('x' in data) and (type(data['x']) is list) and ('y' in data) and (type(data['y']) is list):
-            valores_x = np.array(data['x'])
-            valores_y = np.array(data['y'])
-            # Entrenamiento
-            regresion_lineal = LinearRegression()
-            regresion_lineal.fit(valores_x.reshape(-1,1), valores_y)
+# @app.route("/reglin/", methods=["GET", "POST"])
+# def predecir():
+#     if request.method == "POST":
+#         data = request.get_json()
+#         if (data != None) and ('x' in data) and (type(data['x']) is list) and ('y' in data) and (type(data['y']) is list):
+#             valores_x = np.array(data['x'])
+#             valores_y = np.array(data['y'])
+#             # Entrenamiento
+#             regresion_lineal = LinearRegression()
+#             regresion_lineal.fit(valores_x.reshape(-1,1), valores_y)
 
-            modelo_w = regresion_lineal.coef_
-            modelo_b = regresion_lineal.intercept_
+#             modelo_w = regresion_lineal.coef_
+#             modelo_b = regresion_lineal.intercept_
 
-            # Realiza la prediccion
-            if ('predicciones' in data) and int(data['predicciones']) > 0:
-                numero_predicciones = int(data['predicciones'])
-                maximo_x = valores_x.max()
-                inicio_nuevos_x = maximo_x + 1
-                fin_nuevos_x = maximo_x + numero_predicciones + 1
-                step_nuevos = 1
-                nuevos_x = np.arange(inicio_nuevos_x, fin_nuevos_x, step_nuevos)
-                predicciones_y = regresion_lineal.predict(nuevos_x.reshape(-1,1))
-                # Grafico
-                plt.scatter(nuevos_x, predicciones_y, label="data", color="blue")
-                plt.title("Predicciones")
-                picIObytes = io.BytesIO()
-                plt.savefig(picIObytes, format="png")
-                picIObytes.seek(0)
-                imgBase64Data = base64.b64encode(picIObytes.read())
-                imgAsStr = imgBase64Data.decode('ascii')
-                # Respuesta a devolver
-                respuesta = {
-                    "status": True,
-                    "data": {
-                        "x": nuevos_x.tolist(),
-                        "y": predicciones_y.tolist(),
-                        "chart": imgAsStr
-                    }
-                }
-                return jsonify(respuesta)
-            else:
-                return "error"
-        else:
-            respuesta = {
-                "status": False,
-                "message": 'Error en la petición. Usa { x:[1,2, ... n], y:[1,2,3 ... n], predicciones: num }'
-            }
-            return jsonify(respuesta)
-    elif request.method == "GET":
-        return "Hola, GET!"
+#             # Realiza la prediccion
+#             if ('predicciones' in data) and int(data['predicciones']) > 0:
+#                 numero_predicciones = int(data['predicciones'])
+#                 maximo_x = valores_x.max()
+#                 inicio_nuevos_x = maximo_x + 1
+#                 fin_nuevos_x = maximo_x + numero_predicciones + 1
+#                 step_nuevos = 1
+#                 nuevos_x = np.arange(inicio_nuevos_x, fin_nuevos_x, step_nuevos)
+#                 predicciones_y = regresion_lineal.predict(nuevos_x.reshape(-1,1))
+#                 # Grafico
+#                 plt.scatter(nuevos_x, predicciones_y, label="data", color="blue")
+#                 plt.title("Predicciones")
+#                 picIObytes = io.BytesIO()
+#                 plt.savefig(picIObytes, format="png")
+#                 picIObytes.seek(0)
+#                 imgBase64Data = base64.b64encode(picIObytes.read())
+#                 imgAsStr = imgBase64Data.decode('ascii')
+#                 # Respuesta a devolver
+#                 respuesta = {
+#                     "status": True,
+#                     "data": {
+#                         "x": nuevos_x.tolist(),
+#                         "y": predicciones_y.tolist(),
+#                         "chart": imgAsStr
+#                     }
+#                 }
+#                 return jsonify(respuesta)
+#             else:
+#                 return "error"
+#         else:
+#             respuesta = {
+#                 "status": False,
+#                 "message": 'Error en la petición. Usa { x:[1,2, ... n], y:[1,2,3 ... n], predicciones: num }'
+#             }
+#             return jsonify(respuesta)
+#     elif request.method == "GET":
+#         return "Hola, GET!"
+
+
 
 @app.route('/rlineal', methods=['POST','GET'])
 def preRLinea():
