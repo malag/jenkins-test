@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t "malagoiram/proyectoapi:"$1
+docker build -t malagoiram/proyectoapi:$1 .
