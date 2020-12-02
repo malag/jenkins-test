@@ -26,5 +26,11 @@ pipeline {
       }
     }
 
+    stage('Test - QA') {
+      steps {
+        sh './scripts/test_container.sh'
+      }
+    }
+
   }
 }
