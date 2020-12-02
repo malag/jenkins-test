@@ -29,6 +29,7 @@ docker run --name proyapi -itd --rm -p 5000:5000 malagoiram/proyectoapi:1.1 '''
 
     stage('Test - QA') {
       steps {
+        sleep 10
         sh './scripts/test_container.sh'
       }
     }
