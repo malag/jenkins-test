@@ -34,5 +34,11 @@ docker run --name proyapi -itd --rm -p 5000:5000 malagoiram/proyectoapi:1.1 '''
       }
     }
 
+    stage('publicar') {
+      steps {
+        sh 'docker push malagoiram/proyectoapi:1.1 '
+      }
+    }
+
   }
 }
